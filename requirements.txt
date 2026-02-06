@@ -1,0 +1,30 @@
+# ==============================================================================
+# REQUIREMENTS.TXT
+# ==============================================================================
+# MSc Thesis: Explainable AI for LLMs via Mechanistic Interpretability
+# Author: Ajay Mahale | Hochschule Trier
+#
+# Install: pip install -r requirements.txt
+#
+# NOTE: Only essential packages are listed. Other libraries that may appear
+# in Colab environments (jax, tensorflow, opencv, etc.) are unused and can
+# be safely ignored.
+# ==============================================================================
+
+# Core (Required)
+torch>=2.0.0
+numpy==1.26.4
+matplotlib>=3.5.0
+
+# Mechanistic Interpretability (Required)
+transformer-lens>=1.0.0
+transformers>=4.30.0
+
+# API - for Notebooks 08, 09 only (Optional)
+anthropic>=0.18.0
+
+# Analysis (Required)
+scipy>=1.9.0
+
+# Utilities (Optional)
+tqdm>=4.64.0
