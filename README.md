@@ -6,10 +6,12 @@
 
 ## MSc Thesis Project
 
-**Author:** Ajay Mahale  
-**Institution:** Hochschule Trier  
-**Supervisor:** Prof. Dr. Haffner  
-**Date:** May 2026
+Sc Thesis: Causally Grounded Mechanistic Interpretability and Concise Natural-Language Explanations
+Author: Ajay Pravin Mahale
+University Mail ID: jymh0144@hochschule-trier.de
+Personal Mail ID: Mahale.ajay01@gmail.com
+Institution: Hochschule Trier
+Supervisor: Prof. Dr. Ernst Georg Haffner
 
 ---
 
