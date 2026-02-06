@@ -1,8 +1,8 @@
-# Explainable AI for LLMs via Mechanistic Interpretability
+# Causally Grounded Mechanistic Interpretability and Concise Natural-Language Explanations
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
 ## MSc Thesis Project
 
@@ -24,6 +24,15 @@ This repository contains the experimental code for my MSc thesis on generating *
 3. **Template vs Learned Comparison**: Quantitative evaluation showing learned explanations achieve +63% quality improvement
 4. **Failure Analysis**: Systematic taxonomy of when/why explanations diverge from mechanisms
 
+## Novelty Statement
+
+To our knowledge, this is the first work to:
+1. Systematically translate mechanistic circuit analysis into natural language explanations
+2. Apply ERASER faithfulness metrics to mechanistic interpretability
+3. Provide quantitative comparison of template-based vs LLM-generated explanations
+4. Analyze failure modes where explanations diverge from underlying mechanisms
+
+   
 ### Results Summary
 
 | Metric | Value |
@@ -120,28 +129,48 @@ Open any notebook in `notebooks/` folder with Google Colab.
 
 ---
 
-## 🎯 Demo
+## 🎯 Demo Output
 
-Run the interactive demo (main entry point):
+Run the interactive demo:
 ```bash
 python src/demo_pipeline.py
 ```
 
-Example output:
+**Example Output:**
 ```
+======================================================================
+MECHANISTIC EXPLANATION
+======================================================================
+
 📝 INPUT:
-   When Mary and John went to the store, John gave a drink to
+   When Diana and Steve went to the museum, Steve showed a painting to
 
 🎯 PREDICTION:
-   "Mary" (Model Confidence: 85.3%)
+   "Diana" (Model Confidence: 71.6%)
 
 🔬 MECHANISTIC EVIDENCE:
-   L9H9  | Name Mover (Primary)  | 17.4% (Avg) | 66.5% → Mary
+----------------------------------------------------------------------
+   Head     | Role                   | Global Imp.  | Attention   
+   -------- | ---------------------- | ------------ | ------------
+   L9H9     | Name Mover (Primary)   |  17.4% (Avg) |  83.9% → Diana
+   L8H10    | S-Inhibition           |  12.3% (Avg) |   8.1% → Diana
+   L7H3     | Name Mover (Secondary) |  10.3% (Avg) |   0.8% → Diana
 
-✅ TRUST ASSESSMENT:
-   Trust Level: MEDIUM
-   (High confidence but low comprehensiveness suggests backup circuits)
+📊 FAITHFULNESS METRICS (ERASER-style):
+   • Sufficiency:        100.0%
+   • Comprehensiveness:  22.4%
+   • Local Faithfulness: 44.4%
+
+💬 EXPLANATION:
+   The model predicts 'Diana' because the Name Mover head L9H9 
+   attends to 'Diana' with 83.9% attention, copying it to output.
+   The S-Inhibition head suppresses 'Steve' (the giver).
 ```
+
+> ⚠️ **Note:** Low comprehensiveness (~22%) indicates backup circuits contribute significantly. This is a known limitation.
+````
+
+
 
 ---
 
@@ -168,19 +197,37 @@ Example output:
 
 ## 📚 References
 
-Key papers this work builds on:
+### Core Methodology
+- Wang, K. et al. (2022). "Interpretability in the Wild: A Circuit for Indirect Object Identification in GPT-2 Small." *ICLR 2023*.
+- Nanda, N. et al. (2022). "TransformerLens." GitHub. https://github.com/TransformerLensOrg/TransformerLens
+- Nanda, N. & Lieberum, T. (2022). "A Comprehensive Mechanistic Interpretability Explainer & Glossary." https://dynalist.io/d/n2ZWtnoYHrU1s4vnFSAQ519J
+- Elhage, N. et al. (2021). "A Mathematical Framework for Transformer Circuits." *Anthropic*.
+- Conmy, A. et al. (2023). "Towards Automated Circuit Discovery for Mechanistic Interpretability." *NeurIPS 2023*.
 
-1. Wang et al. (2022) - "Interpretability in the Wild: IOI Circuit"
-2. DeYoung et al. (2020) - "ERASER Benchmark"
-3. Elhage et al. (2021) - "Mathematical Framework for Transformer Circuits"
-4. Bills et al. (2023) - "Language Models Can Explain Neurons"
-5. Jain & Wallace (2019) - "Attention is Not Explanation"
+### Evaluation & Faithfulness
+- DeYoung, J. et al. (2020). "ERASER: A Benchmark to Evaluate Rationalized NLP Models." *ACL 2020*.
+- Jain, S. & Wallace, B. (2019). "Attention is not Explanation." *NAACL 2019*.
+
+### LLM-Based Explanations
+- Bills, S. et al. (2023). "Language Models Can Explain Neurons in Language Models." *OpenAI*.
+- Anthropic (2024). Claude API. https://www.anthropic.com
+
+### Causal Interpretability
+- Geiger, A. et al. (2021). "Causal Abstractions of Neural Networks." *NeurIPS 2021*.
+- Meng, K. et al. (2022). "Locating and Editing Factual Associations in GPT." *NeurIPS 2022*.
+- Goldowsky-Dill, N. et al. (2023). "Localizing Model Behavior with Path Patching." *arXiv*.
+
+### Foundational
+- Vaswani, A. et al. (2017). "Attention Is All You Need." *NeurIPS 2017*.
+- Radford, A. et al. (2019). "Language Models are Unsupervised Multitask Learners." *OpenAI*.
+- Olah, C. et al. (2020). "Zoom In: An Introduction to Circuits." *Distill*.
+- Olsson, C. et al. (2022). "In-context Learning and Induction Heads." *Anthropic*.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+[CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) — View, study, and cite with attribution. Commercial use and derivatives require written permission.
 
 ---
 
