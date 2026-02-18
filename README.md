@@ -140,7 +140,6 @@ python src/demo_pipeline.py
 
 **Example Output:**
 ```
-=/content/drive/MyDrive/thesis
 ======================================================================
 MECHANISTIC INTERPRETABILITY DEMO
 Explainable AI for LLMs via Circuit Analysis
@@ -149,26 +148,8 @@ Explainable AI for LLMs via Circuit Analysis
 ╔══════════════════════════════════════════════════════════════════╗
 ║  ⚠️  DOMAIN: Indirect Object Identification (IOI) Tasks Only     ║
 ║  Enter sentences like:                                           ║
-║  "When [Name1] and [Name2] went to X, [Name2] gave Y to"        ║
+║  "When [Name1] and [Name2] went to X, [Name2] gave Y to"         ║
 ╚══════════════════════════════════════════════════════════════════╝
-2026-02-13 14:12:57.698392: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
-2026-02-13 14:12:57.704418: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
-2026-02-13 14:12:57.718566: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:467] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
-WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-E0000 00:00:1770991977.743019    4069 cuda_dnn.cc:8579] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
-E0000 00:00:1770991977.749977    4069 cuda_blas.cc:1407] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
-W0000 00:00:1770991977.768713    4069 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
-W0000 00:00:1770991977.768799    4069 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
-W0000 00:00:1770991977.768804    4069 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
-W0000 00:00:1770991977.768809    4069 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
-2026-02-13 14:12:57.774369: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-WARNING:torchao.kernel.intmm:Warning: Detected no triton, on systems without Triton certain kernels will not work
-Loading GPT-2 Small...
-NOTE: This demo runs on CPU by default. CUDA/GPU warnings can be safely ignored.
-`torch_dtype` is deprecated! Use `dtype` instead!
-Loaded pretrained model gpt2-small into HookedTransformer
-✅ Model loaded on CPU
 
 📋 EXAMPLE PROMPTS (10 available):
     1. When Mary and John went to the store, John gave a dr...
