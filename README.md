@@ -538,9 +538,7 @@ Enter a number (1-10) for example, or type your own prompt
 Your choice (or 'q' to quit): q
 Goodbye!
 
-```
-
-> ⚠️ **Note:** Low comprehensiveness (~22%) indicates backup circuits contribute significantly. This is a known limitation.
+> ⚠️ Note: Low comprehensiveness (~22%) indicates backup circuits contribute significantly. This is a known limitation.
 ````
 
 
@@ -549,22 +547,22 @@ Goodbye!
 
 ## 📊 Metric Definitions
 
-| Metric | Definition |
-|--------|------------|
-| **Sufficiency** | Prediction preserved when using ONLY the cited heads |
-| **Comprehensiveness** | Prediction reduction when ABLATING the cited heads |
-| **Local Faithfulness Score** | ERASER-style proxy: harmonic mean of Sufficiency and Comprehensiveness |
-| **Global Importance** | Dataset-level average from ablation experiments (following IOI methodology) |
-| **Attention Weight** | Instance-level correlation (NOT causation) |
+| Metric                        | Definition                                                              |
+|----------------------------|----------------------------------------------------------------------------|
+| Sufficiency                | Prediction preserved when using ONLY the cited heads                       |
+| Comprehensiveness          | Prediction reduction when ABLATING the cited heads                         |
+| Local Faithfulness Score   | ERASER-style proxy: harmonic mean of Sufficiency and Comprehensiveness     |
+| Global Importance          | Dataset-level average from ablation experiments (following IOI methodology) |
+| Attention Weight           | Instance-level correlation (NOT causation)                                 |
 
 ---
 
 ## ⚠️ Limitations
 
-- **Model**: Validated only on GPT-2 Small (124M parameters)
-- **Task**: Only works for Indirect Object Identification (IOI) tasks
-- **Generalization**: Results may not generalize to larger models or other tasks
-- **Comprehensiveness**: 22% average indicates significant distributed computation
+- Model: Validated only on GPT-2 Small (124M parameters)
+- Task: Only works for Indirect Object Identification (IOI) tasks
+- Generalization: Results may not generalize to larger models or other tasks
+- Comprehensiveness: 22% average indicates significant distributed computation
 
 ---
 
@@ -609,4 +607,3 @@ Goodbye!
 - Prof. Dr. Haffner (Supervisor)
 - Hochschule Trier
 - TransformerLens library by Neel Nanda
-- Anthropic for Claude API access
