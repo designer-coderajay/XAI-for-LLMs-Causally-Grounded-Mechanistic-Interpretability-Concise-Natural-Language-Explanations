@@ -140,33 +140,423 @@ python src/demo_pipeline.py
 
 **Example Output:**
 ```
+=/content/drive/MyDrive/thesis
+======================================================================
+MECHANISTIC INTERPRETABILITY DEMO
+Explainable AI for LLMs via Circuit Analysis
+======================================================================
+
+╔══════════════════════════════════════════════════════════════════╗
+║  ⚠️  DOMAIN: Indirect Object Identification (IOI) Tasks Only     ║
+║  Enter sentences like:                                           ║
+║  "When [Name1] and [Name2] went to X, [Name2] gave Y to"        ║
+╚══════════════════════════════════════════════════════════════════╝
+2026-02-13 14:12:57.698392: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
+2026-02-13 14:12:57.704418: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
+2026-02-13 14:12:57.718566: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:467] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1770991977.743019    4069 cuda_dnn.cc:8579] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1770991977.749977    4069 cuda_blas.cc:1407] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+W0000 00:00:1770991977.768713    4069 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1770991977.768799    4069 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1770991977.768804    4069 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1770991977.768809    4069 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+2026-02-13 14:12:57.774369: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING:torchao.kernel.intmm:Warning: Detected no triton, on systems without Triton certain kernels will not work
+Loading GPT-2 Small...
+NOTE: This demo runs on CPU by default. CUDA/GPU warnings can be safely ignored.
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loaded pretrained model gpt2-small into HookedTransformer
+✅ Model loaded on CPU
+
+📋 EXAMPLE PROMPTS (10 available):
+    1. When Mary and John went to the store, John gave a dr...
+    2. When Alice and Bob went to the park, Bob handed a fl...
+    3. When Sarah and Tom went to the library, Tom showed a...
+    4. When Emma and James went to the cafe, James offered ...
+    5. When Lisa and David went to the beach, David threw a...
+    6. When Sophie and Daniel went to the party, Daniel gav...
+    7. When Rachel and Chris went to the office, Chris sent...
+    8. When Laura and Kevin went to the restaurant, Kevin p...
+    9. When Julia and Peter went to the garden, Peter hande...
+   10. When Diana and Steve went to the museum, Steve showe...
+
+----------------------------------------------------------------------
+Enter a number (1-10) for example, or type your own prompt
+Your choice (or 'q' to quit): 5
+
+🔍 Analyzing: "When Lisa and David went to the beach, David threw..."
 ======================================================================
 MECHANISTIC EXPLANATION
 ======================================================================
 
+╔══════════════════════════════════════════════════════════════════╗
+║  ⚠️  DOMAIN: Indirect Object Identification (IOI) Tasks Only     ║
+║  This tool analyzes sentences like:                              ║
+║  "When [Name1] and [Name2] went to X, [Name2] gave Y to _"      ║
+╚══════════════════════════════════════════════════════════════════╝
+
 📝 INPUT:
-   When Diana and Steve went to the museum, Steve showed a painting to
+   When Lisa and David went to the beach, David threw a ball to
 
 🎯 PREDICTION:
-   "Diana" (Model Confidence: 71.6%)
+   "Lisa" (Model Confidence: 23.6%)
+   ⚠️  LOW CONFIDENCE: Model uncertainty is high; prediction reliability is reduced
+
+👥 NAMES IDENTIFIED:
+   • Indirect Object (recipient): Lisa
+   • Subject (giver): David
 
 🔬 MECHANISTIC EVIDENCE:
 ----------------------------------------------------------------------
    Head     | Role                   | Global Imp.  | Attention   
    -------- | ---------------------- | ------------ | ------------
-   L9H9     | Name Mover (Primary)   |  17.4% (Avg) |  83.9% → Diana
-   L8H10    | S-Inhibition           |  12.3% (Avg) |   8.1% → Diana
-   L7H3     | Name Mover (Secondary) |  10.3% (Avg) |   0.8% → Diana
+   L9H9     | Name Mover (Primary)   |  17.4% (Avg) |  54.5% → Lisa
+   L8H10    | S-Inhibition           |  12.3% (Avg) |   3.8% → Lisa
+   L7H3     | Name Mover (Secondary) |  10.3% (Avg) |   0.8% → Lisa
+   L10H6    | Backup Name Mover      |   8.9% (Avg) |  19.7% → Lisa
+   L9H6     | Name Mover (Tertiary)  |   6.3% (Avg) |  61.4% → Lisa
+   L10H0    | Output Head            |   6.2% (Avg) |  35.7% → Lisa
+
+   📌 TERMINOLOGY NOTE:
+   • Global Importance = Dataset-level average from our ablation experiments (following IOI methodology)
+   • Attention = This specific input (correlation, NOT causation)
 
 📊 FAITHFULNESS METRICS (ERASER-style):
+----------------------------------------------------------------------
    • Sufficiency:        100.0%
-   • Comprehensiveness:  22.4%
-   • Local Faithfulness: 44.4%
+     (Prediction preserved when using ONLY the 6 cited heads)
+     Note: This measures performance retention, not total explanation
 
-💬 EXPLANATION:
-   The model predicts 'Diana' because the Name Mover head L9H9 
-   attends to 'Diana' with 83.9% attention, copying it to output.
-   The S-Inhibition head suppresses 'Steve' (the giver).
+   • Comprehensiveness:  24.6%
+     (Prediction reduced by 24.6% when ablating cited heads)
+     ⚠️  LOW COVERAGE WARNING:
+        75.4% of computation uses backup/distributed circuits
+        The explanation is INCOMPLETE (this is a known limitation)
+
+   • Local Faithfulness Score:           48.7%
+     (ERASER-style proxy: harmonic mean of Sufficiency and Comprehensiveness)
+
+✅ TRUST ASSESSMENT:
+----------------------------------------------------------------------
+   Model Confidence:     23.6%
+   Sufficiency:          100.0%
+   Comprehensiveness:    24.6%
+
+   🔒 Trust Level: LOW
+   Reason: Low model confidence (23.6%) - prediction may be unreliable
+
+   ⚠️  WARNINGS:
+      • LOW COVERAGE: Only 24.6% of computation explained
+      • Remaining 75.4% uses distributed/backup circuits
+
+💬 NATURAL LANGUAGE EXPLANATION:
+----------------------------------------------------------------------
+   The model predicts 'Lisa' because:
+   
+   1. The Name Mover head L9H9 attends to 'Lisa' 
+      with 54.5% attention weight, copying it to the output.
+   
+   2. The S-Inhibition head L8H10 suppresses 'David' (the giver),
+      preventing the model from outputting the subject instead.
+   
+   3. These 6 heads together account for 61.4% of the circuit's
+      normalized logit-difference attribution captured by the predefined IOI circuit.
+
+   ⚠️  CAVEAT: The low comprehensiveness (24.6%) indicates that
+   backup circuits and distributed computation contribute significantly.
+   This explanation covers the PRIMARY mechanism but not the full picture.
+
+⚠️  LIMITATIONS:
+----------------------------------------------------------------------
+   • Validated only on GPT-2 Small (124M parameters)
+   • Only works for Indirect Object Identification (IOI) tasks
+   • Global importance scores are dataset averages, not instance-specific
+   • Comprehensiveness gap indicates distributed computation exists
+   • May not generalize to other models or tasks
+
+======================================================================
+
+----------------------------------------------------------------------
+Enter a number (1-10) for example, or type your own prompt
+Your choice (or 'q' to quit): 2
+
+🔍 Analyzing: "When Alice and Bob went to the park, Bob handed a ..."
+======================================================================
+MECHANISTIC EXPLANATION
+======================================================================
+
+╔══════════════════════════════════════════════════════════════════╗
+║  ⚠️  DOMAIN: Indirect Object Identification (IOI) Tasks Only     ║
+║  This tool analyzes sentences like:                              ║
+║  "When [Name1] and [Name2] went to X, [Name2] gave Y to _"      ║
+╚══════════════════════════════════════════════════════════════════╝
+
+📝 INPUT:
+   When Alice and Bob went to the park, Bob handed a flower to
+
+🎯 PREDICTION:
+   "Alice" (Model Confidence: 86.3%)
+
+👥 NAMES IDENTIFIED:
+   • Indirect Object (recipient): Alice
+   • Subject (giver): Bob
+
+🔬 MECHANISTIC EVIDENCE:
+----------------------------------------------------------------------
+   Head     | Role                   | Global Imp.  | Attention   
+   -------- | ---------------------- | ------------ | ------------
+   L9H9     | Name Mover (Primary)   |  17.4% (Avg) |  81.3% → Alice
+   L8H10    | S-Inhibition           |  12.3% (Avg) |   6.9% → Alice
+   L7H3     | Name Mover (Secondary) |  10.3% (Avg) |   1.0% → Alice
+   L10H6    | Backup Name Mover      |   8.9% (Avg) |  23.6% → Alice
+   L9H6     | Name Mover (Tertiary)  |   6.3% (Avg) |  72.1% → Alice
+   L10H0    | Output Head            |   6.2% (Avg) |  43.4% → Alice
+
+   📌 TERMINOLOGY NOTE:
+   • Global Importance = Dataset-level average from our ablation experiments (following IOI methodology)
+   • Attention = This specific input (correlation, NOT causation)
+
+📊 FAITHFULNESS METRICS (ERASER-style):
+----------------------------------------------------------------------
+   • Sufficiency:        100.0%
+     (Prediction preserved when using ONLY the 6 cited heads)
+     Note: This measures performance retention, not total explanation
+
+   • Comprehensiveness:  24.3%
+     (Prediction reduced by 24.3% when ablating cited heads)
+     ⚠️  LOW COVERAGE WARNING:
+        75.7% of computation uses backup/distributed circuits
+        The explanation is INCOMPLETE (this is a known limitation)
+
+   • Local Faithfulness Score:           48.1%
+     (ERASER-style proxy: harmonic mean of Sufficiency and Comprehensiveness)
+
+✅ TRUST ASSESSMENT:
+----------------------------------------------------------------------
+   Model Confidence:     86.3%
+   Sufficiency:          100.0%
+   Comprehensiveness:    24.3%
+
+   🔒 Trust Level: HIGH
+   Reason: High model confidence and high sufficiency
+
+   ⚠️  WARNINGS:
+      • LOW COVERAGE: Only 24.3% of computation explained
+      • Remaining 75.7% uses distributed/backup circuits
+
+💬 NATURAL LANGUAGE EXPLANATION:
+----------------------------------------------------------------------
+   The model predicts 'Alice' because:
+   
+   1. The Name Mover head L9H9 attends to 'Alice' 
+      with 81.3% attention weight, copying it to the output.
+   
+   2. The S-Inhibition head L8H10 suppresses 'Bob' (the giver),
+      preventing the model from outputting the subject instead.
+   
+   3. These 6 heads together account for 61.4% of the circuit's
+      normalized logit-difference attribution captured by the predefined IOI circuit.
+
+   ⚠️  CAVEAT: The low comprehensiveness (24.3%) indicates that
+   backup circuits and distributed computation contribute significantly.
+   This explanation covers the PRIMARY mechanism but not the full picture.
+
+⚠️  LIMITATIONS:
+----------------------------------------------------------------------
+   • Validated only on GPT-2 Small (124M parameters)
+   • Only works for Indirect Object Identification (IOI) tasks
+   • Global importance scores are dataset averages, not instance-specific
+   • Comprehensiveness gap indicates distributed computation exists
+   • May not generalize to other models or tasks
+
+======================================================================
+
+----------------------------------------------------------------------
+Enter a number (1-10) for example, or type your own prompt
+Your choice (or 'q' to quit): 7
+
+🔍 Analyzing: "When Rachel and Chris went to the office, Chris se..."
+======================================================================
+MECHANISTIC EXPLANATION
+======================================================================
+
+╔══════════════════════════════════════════════════════════════════╗
+║  ⚠️  DOMAIN: Indirect Object Identification (IOI) Tasks Only     ║
+║  This tool analyzes sentences like:                              ║
+║  "When [Name1] and [Name2] went to X, [Name2] gave Y to _"      ║
+╚══════════════════════════════════════════════════════════════════╝
+
+📝 INPUT:
+   When Rachel and Chris went to the office, Chris sent a message to
+
+🎯 PREDICTION:
+   "Rachel" (Model Confidence: 54.6%)
+
+👥 NAMES IDENTIFIED:
+   • Indirect Object (recipient): Rachel
+   • Subject (giver): Chris
+
+🔬 MECHANISTIC EVIDENCE:
+----------------------------------------------------------------------
+   Head     | Role                   | Global Imp.  | Attention   
+   -------- | ---------------------- | ------------ | ------------
+   L9H9     | Name Mover (Primary)   |  17.4% (Avg) |  79.2% → Rachel
+   L8H10    | S-Inhibition           |  12.3% (Avg) |   4.6% → Rachel
+   L7H3     | Name Mover (Secondary) |  10.3% (Avg) |   2.1% → Rachel
+   L10H6    | Backup Name Mover      |   8.9% (Avg) |  14.8% → Rachel
+   L9H6     | Name Mover (Tertiary)  |   6.3% (Avg) |  75.2% → Rachel
+   L10H0    | Output Head            |   6.2% (Avg) |  35.6% → Rachel
+
+   📌 TERMINOLOGY NOTE:
+   • Global Importance = Dataset-level average from our ablation experiments (following IOI methodology)
+   • Attention = This specific input (correlation, NOT causation)
+
+📊 FAITHFULNESS METRICS (ERASER-style):
+----------------------------------------------------------------------
+   • Sufficiency:        100.0%
+     (Prediction preserved when using ONLY the 6 cited heads)
+     Note: This measures performance retention, not total explanation
+
+   • Comprehensiveness:  31.0%
+     (Prediction reduced by 31.0% when ablating cited heads)
+
+   • Local Faithfulness Score:           61.5%
+     (ERASER-style proxy: harmonic mean of Sufficiency and Comprehensiveness)
+
+✅ TRUST ASSESSMENT:
+----------------------------------------------------------------------
+   Model Confidence:     54.6%
+   Sufficiency:          100.0%
+   Comprehensiveness:    31.0%
+
+   🔒 Trust Level: MEDIUM
+   Reason: Moderate confidence and sufficiency
+
+💬 NATURAL LANGUAGE EXPLANATION:
+----------------------------------------------------------------------
+   The model predicts 'Rachel' because:
+   
+   1. The Name Mover head L9H9 attends to 'Rachel' 
+      with 79.2% attention weight, copying it to the output.
+   
+   2. The S-Inhibition head L8H10 suppresses 'Chris' (the giver),
+      preventing the model from outputting the subject instead.
+   
+   3. These 6 heads together account for 61.4% of the circuit's
+      normalized logit-difference attribution captured by the predefined IOI circuit.
+
+⚠️  LIMITATIONS:
+----------------------------------------------------------------------
+   • Validated only on GPT-2 Small (124M parameters)
+   • Only works for Indirect Object Identification (IOI) tasks
+   • Global importance scores are dataset averages, not instance-specific
+   • Comprehensiveness gap indicates distributed computation exists
+   • May not generalize to other models or tasks
+
+======================================================================
+
+----------------------------------------------------------------------
+Enter a number (1-10) for example, or type your own prompt
+Your choice (or 'q' to quit): 1
+
+🔍 Analyzing: "When Mary and John went to the store, John gave a ..."
+======================================================================
+MECHANISTIC EXPLANATION
+======================================================================
+
+╔══════════════════════════════════════════════════════════════════╗
+║  ⚠️  DOMAIN: Indirect Object Identification (IOI) Tasks Only     ║
+║  This tool analyzes sentences like:                              ║
+║  "When [Name1] and [Name2] went to X, [Name2] gave Y to _"      ║
+╚══════════════════════════════════════════════════════════════════╝
+
+📝 INPUT:
+   When Mary and John went to the store, John gave a drink to
+
+🎯 PREDICTION:
+   "Mary" (Model Confidence: 67.7%)
+
+👥 NAMES IDENTIFIED:
+   • Indirect Object (recipient): Mary
+   • Subject (giver): John
+
+🔬 MECHANISTIC EVIDENCE:
+----------------------------------------------------------------------
+   Head     | Role                   | Global Imp.  | Attention   
+   -------- | ---------------------- | ------------ | ------------
+   L9H9     | Name Mover (Primary)   |  17.4% (Avg) |  66.5% → Mary
+   L8H10    | S-Inhibition           |  12.3% (Avg) |   5.8% → Mary
+   L7H3     | Name Mover (Secondary) |  10.3% (Avg) |   0.6% → Mary
+   L10H6    | Backup Name Mover      |   8.9% (Avg) |  10.8% → Mary
+   L9H6     | Name Mover (Tertiary)  |   6.3% (Avg) |  67.2% → Mary
+   L10H0    | Output Head            |   6.2% (Avg) |  33.2% → Mary
+
+   📌 TERMINOLOGY NOTE:
+   • Global Importance = Dataset-level average from our ablation experiments (following IOI methodology)
+   • Attention = This specific input (correlation, NOT causation)
+
+📊 FAITHFULNESS METRICS (ERASER-style):
+----------------------------------------------------------------------
+   • Sufficiency:        100.0%
+     (Prediction preserved when using ONLY the 6 cited heads)
+     Note: This measures performance retention, not total explanation
+
+   • Comprehensiveness:  28.4%
+     (Prediction reduced by 28.4% when ablating cited heads)
+     ⚠️  LOW COVERAGE WARNING:
+        71.6% of computation uses backup/distributed circuits
+        The explanation is INCOMPLETE (this is a known limitation)
+
+   • Local Faithfulness Score:           56.2%
+     (ERASER-style proxy: harmonic mean of Sufficiency and Comprehensiveness)
+
+✅ TRUST ASSESSMENT:
+----------------------------------------------------------------------
+   Model Confidence:     67.7%
+   Sufficiency:          100.0%
+   Comprehensiveness:    28.4%
+
+   🔒 Trust Level: MEDIUM
+   Reason: Adequate confidence but low comprehensiveness suggests backup circuits
+
+   ⚠️  WARNINGS:
+      • LOW COVERAGE: Only 28.4% of computation explained
+      • Remaining 71.6% uses distributed/backup circuits
+
+💬 NATURAL LANGUAGE EXPLANATION:
+----------------------------------------------------------------------
+   The model predicts 'Mary' because:
+   
+   1. The Name Mover head L9H9 attends to 'Mary' 
+      with 66.5% attention weight, copying it to the output.
+   
+   2. The S-Inhibition head L8H10 suppresses 'John' (the giver),
+      preventing the model from outputting the subject instead.
+   
+   3. These 6 heads together account for 61.4% of the circuit's
+      normalized logit-difference attribution captured by the predefined IOI circuit.
+
+   ⚠️  CAVEAT: The low comprehensiveness (28.4%) indicates that
+   backup circuits and distributed computation contribute significantly.
+   This explanation covers the PRIMARY mechanism but not the full picture.
+
+⚠️  LIMITATIONS:
+----------------------------------------------------------------------
+   • Validated only on GPT-2 Small (124M parameters)
+   • Only works for Indirect Object Identification (IOI) tasks
+   • Global importance scores are dataset averages, not instance-specific
+   • Comprehensiveness gap indicates distributed computation exists
+   • May not generalize to other models or tasks
+
+======================================================================
+
+----------------------------------------------------------------------
+Enter a number (1-10) for example, or type your own prompt
+Your choice (or 'q' to quit): q
+Goodbye!
+
 ```
 
 > ⚠️ **Note:** Low comprehensiveness (~22%) indicates backup circuits contribute significantly. This is a known limitation.
