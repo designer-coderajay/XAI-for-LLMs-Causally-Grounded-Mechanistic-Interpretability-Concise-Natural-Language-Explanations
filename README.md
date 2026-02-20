@@ -72,8 +72,8 @@ thesis/
 │   ├── 05_expanded_evaluation.ipynb
 │   ├── 06_failure_analysis_main.ipynb
 │   ├── 07_esnli_format_study.ipynb
-│   ├── 08_learned_nl_generator.ipynb      # Private
-│   ├── 09_template_vs_learned.ipynb       # Private
+│   ├── 08_learned_nl_generator.ipynb      
+│   ├── 09_template_vs_learned.ipynb      
 │   └── 10_final_evaluation.ipynb
 ├── results/             # Experiment results (.pkl files)
 ├── figures/             # Generated plots and figures
