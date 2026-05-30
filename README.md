@@ -82,7 +82,6 @@ thesis/
 │   └── 00_reproducibility_config.py
 ├── data/                # Data files
 ├── docs/                # Documentation
-├── thesis_writing/      # Thesis chapters
 ├── requirements.txt
 └── README.md
 ```
